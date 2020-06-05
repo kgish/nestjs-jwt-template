@@ -3,7 +3,7 @@ version: '2.4'
 services:
 
   postgres:
-    image: postgres:9.6.2-alpine
+    image: postgres:12-alpine
     environment:
       POSTGRES_USER: nestjs
       POSTGRES_PASSWORD: nestjs

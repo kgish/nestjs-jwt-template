@@ -1,4 +1,4 @@
-import { Logger, Module, NestModule } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
@@ -35,7 +35,7 @@ const logging = process.env.DB_LOGGING ? process.env.DB_LOGGING === 'true' : tru
     ),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secretOrPrivateKey: process.env.JWT_SECRET || 'jwtsecret12345!',
+      secretOrPrivateKey: process.env.JWT_SECRET || 'secret',
       signOptions: {
         expiresIn: process.env.JWT_EXPIRES || '30m'
       },

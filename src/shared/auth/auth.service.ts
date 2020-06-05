@@ -19,7 +19,7 @@ export class AuthService {
     readonly userService: UserService) {
     this.logger = new Logger('AuthService');
     this.jwtOptions = { expiresIn: process.env.JWT_EXPIRES || '30m' };
-    this.jwtKey = process.env.JWT_SECRET || 'jwtsecret12345!';
+    this.jwtKey = process.env.JWT_SECRET || 'secret';
     this.logger.log(`constructor() ${JSON.stringify({ jwtKey: this.jwtKey, jwtOptions: this.jwtOptions })}`);
   }
 

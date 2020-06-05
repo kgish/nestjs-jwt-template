@@ -12,11 +12,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_SECRET || 'jwtsecret12345!',
+      secretOrKey: process.env.JWT_SECRET || 'secret',
     });
     this.logger = new Logger('JwtStrategy');
     const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-    const secretOrKey = process.env.JWT_SECRET || 'jwtsecret12345!';
+    const secretOrKey = process.env.JWT_SECRET || 'secret';
     this.logger.log(`constructor() ${JSON.stringify({ jwtFromRequest, secretOrKey })}`);
   }
 

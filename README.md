@@ -2,7 +2,7 @@
 
 ## Description
 
-A NestJS JWT Template for getting started.
+A simple NestJS JWT template for getting started.
 
 ## Installation
 
