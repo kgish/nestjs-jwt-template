@@ -2,7 +2,7 @@
 
 ## Description
 
-Simple Mock Server for Testing the Compliancy Platform Client App, based on [Nest](https://github.com/nestjs/nest).
+A NestJS JWT Template for getting started.
 
 ## Installation
 
@@ -109,4 +109,3 @@ $ npm run migration:run
 * [PassportJS](http://www.passportjs.org)
 * [Faker](https://github.com/marak/Faker.js)
 * [AutomapperTS](https://github.com/loedeman/AutoMapper/wiki/Getting-started)
-* [Config](lorenwest/node-config)

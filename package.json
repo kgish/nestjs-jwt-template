@@ -1,7 +1,7 @@
 {
-  "name": "nestjs-api",
+  "name": "nestjs-jwt-template",
   "version": "0.0.1",
-  "description": "description",
+  "description": "A NestJS JWT Template for getting started",
   "author": "Kiffin Gish",
   "license": "MIT",
   "scripts": {
