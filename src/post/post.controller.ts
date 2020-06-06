@@ -21,9 +21,9 @@ import {
   ApiNotFoundResponse,
 } from '@nestjs/swagger';
 
-import { OperatorService } from './operator.service';
-import { OperatorEntity } from './operator.entity';
-import { OperatorDto } from './dto/operator.dto';
+import { PostService } from './post.service';
+import { PostEntity } from './post.entity';
+import { PostDto } from './dto/post.dto';
 
 import { ValidationPipe } from '../shared/pipes/validation.pipe';
 import { GetOperationId } from '../shared/utilities/get-operation-id';
@@ -34,75 +34,75 @@ import { RolesGuard } from '../shared/guards/roles.guard';
 import { JwtAuthGuard } from '../shared/auth/guards/jwt-auth.guard';
 
 @ApiBearerAuth()
-@ApiTags('operators')
-@Controller('operators')
-export class OperatorController {
+@ApiTags('posts')
+@Controller('posts')
+export class PostController {
 
-  private logger = new Logger('OperatorController');
+  private logger = new Logger('PostController');
 
-  constructor(private operatorService: OperatorService) {
+  constructor(private postService: PostService) {
   }
 
   @Post()
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe())
-  @ApiCreatedResponse({ type: OperatorEntity })
+  @ApiCreatedResponse({ type: PostEntity })
   @ApiBadRequestResponse({ type: ApiException })
   @ApiForbiddenResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(OperatorEntity.modelName, 'Create'))
-  create(@Body() data: OperatorDto): Promise<OperatorEntity> {
+  @ApiOperation(GetOperationId(PostEntity.modelName, 'Create'))
+  create(@Body() data: PostDto): Promise<PostEntity> {
     this.logger.log(JSON.stringify(data));
-    return this.operatorService.create(data);
+    return this.postService.create(data);
   }
 
   @Get()
-  @Roles(Role.admin, Role.support)
+  @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: OperatorEntity, isArray: true })
+  @ApiOkResponse({ type: PostEntity, isArray: true })
   @ApiBadRequestResponse({ type: ApiException })
   @ApiForbiddenResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(OperatorEntity.modelName, 'GetAll'))
-  findAll(): Promise<OperatorEntity[]> {
-    return this.operatorService.findAll();
+  @ApiOperation(GetOperationId(PostEntity.modelName, 'GetAll'))
+  findAll(): Promise<PostEntity[]> {
+    return this.postService.findAll();
   }
 
   @Get(':id')
-  @Roles(Role.admin, Role.support)
+  @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: OperatorEntity })
+  @ApiOkResponse({ type: PostEntity })
   @ApiBadRequestResponse({ type: ApiException })
   @ApiNotFoundResponse({ type: ApiException })
   @ApiForbiddenResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(OperatorEntity.modelName, 'GetOne'))
-  findOne(@Param('id') id: string): Promise<OperatorEntity> {
-    return this.operatorService.findOne(id);
+  @ApiOperation(GetOperationId(PostEntity.modelName, 'GetOne'))
+  findOne(@Param('id') id: string): Promise<PostEntity> {
+    return this.postService.findOne(id);
   }
 
   @Put()
-  @Roles(Role.admin, Role.support)
+  @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe())
-  @ApiOkResponse({ type: OperatorEntity })
+  @ApiOkResponse({ type: PostEntity })
   @ApiBadRequestResponse({ type: ApiException })
   @ApiNotFoundResponse({ type: ApiException })
   @ApiForbiddenResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(OperatorEntity.modelName, 'GetOne'))
-  @ApiOperation(GetOperationId(OperatorEntity.modelName, 'Update'))
-  update(@Param('id') id: string, @Body() data: Partial<OperatorDto>) {
+  @ApiOperation(GetOperationId(PostEntity.modelName, 'GetOne'))
+  @ApiOperation(GetOperationId(PostEntity.modelName, 'Update'))
+  update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
     this.logger.log(JSON.stringify(data));
-    return this.operatorService.update(id, data);
+    return this.postService.update(id, data);
   }
 
   @Delete()
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: OperatorEntity })
+  @ApiOkResponse({ type: PostEntity })
   @ApiBadRequestResponse({ type: ApiException })
   @ApiNotFoundResponse({ type: ApiException })
   @ApiForbiddenResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(OperatorEntity.modelName, 'Delete'))
+  @ApiOperation(GetOperationId(PostEntity.modelName, 'Delete'))
   delete(@Param('id') id: string) {
-    return this.operatorService.delete(id);
+    return this.postService.delete(id);
   }
 }

@@ -2,9 +2,13 @@ FROM node:12-alpine
 
 EXPOSE 3000 9229
 
-COPY . /home/nestjs-api
+#RUN addgroup -S nestjs && adduser -S nestjs -G nestjs
 
-WORKDIR /home/nestjs-api
+#USER nestjs
+
+COPY . /home/nestjs
+
+WORKDIR /home/nestjs
 
 RUN npm install && chmod a+x ./scripts/*.sh
 

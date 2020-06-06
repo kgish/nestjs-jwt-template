@@ -82,14 +82,15 @@ $ npm run test:cov
 ## Migrations
 
 Create a new empty migration:
+
 ```
-$ ts-node ./node_modules/typeorm/cli.js migration:create -n NameOfMigration
+$ npm run migration:create NameOfMigration
 
 ```
 
 Generate a migration from current schemas:
 ```
-$ ts-node ./node_modules/typeorm/cli.js migration:generate -n NameOfMigration
+$ npm run migration:generate NameOfMigration
 
 ```
 

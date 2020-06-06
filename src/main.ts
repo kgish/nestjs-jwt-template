@@ -24,7 +24,7 @@ async function bootstrap() {
     // setExternalDoc(description: string, url: string): this;
     .setExternalDoc('README', 'https://github.com/kgish/nestjs-jwt-template/blob/master/README.md')
     .addTag('root')
-    .addTag('operators')
+    .addTag('posts')
     .addTag('users')
     // addSecurity(name: string, options: SecuritySchemeObject): this;
     // addSecurityRequirements(name: string, requirements?: string[]): this;
@@ -62,6 +62,6 @@ async function bootstrap() {
   await app.listen(port);
 
   Logger.log(`Server running on ${ hostDomain }/${ prefix }`, 'bootstrap');
-}
+};
 
 bootstrap();

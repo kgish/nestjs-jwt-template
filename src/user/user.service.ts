@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from './user.entity';
 import { UserRO, User, Role } from './interfaces';
-import { OperatorEntity } from '../operator/operator.entity';
+import { PostEntity } from '../post/post.entity';
 import { UserRegisterDto, UserLoginDto } from './dto';
 import { JwtPayload } from '../shared/auth/interfaces/jwt-payload.interface';
 import { AuthService } from '../shared/auth/auth.service';
@@ -18,17 +18,17 @@ export class UserService {
     private readonly authService: AuthService,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-    @InjectRepository(OperatorEntity)
-    private operatorRepository: Repository<OperatorEntity>) {
+    @InjectRepository(PostEntity)
+    private operatorRepository: Repository<PostEntity>) {
   }
 
   async findAll(): Promise<UserRO[]> {
-    const users = await this.userRepository.find({ relations: [ 'operator' ] });
+    const users = await this.userRepository.find({ relations: [ 'posts' ] });
     return users.map(user => user.toResponseObject());
   }
 
   async findOne(id: string): Promise<UserRO> {
-    const user = await this.userRepository.findOne({ where: { id }, relations: [ 'operator' ] });
+    const user = await this.userRepository.findOne({ where: { id }, relations: [ 'posts' ] });
     if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
@@ -36,7 +36,7 @@ export class UserService {
   }
 
   async findOneUsername(username: string): Promise<UserRO> {
-    const user = await this.userRepository.findOne({ where: { username }, relations: [ 'operator' ] });
+    const user = await this.userRepository.findOne({ where: { username }, relations: [ 'posts' ] });
     if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }

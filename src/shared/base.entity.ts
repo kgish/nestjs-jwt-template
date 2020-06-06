@@ -4,13 +4,13 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 export class BaseEntity extends _BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @ApiPropertyOptional()
-  id?: string;
+  id: string;
 
   @CreateDateColumn()
   @ApiPropertyOptional({ type: String, format: 'date-time' })
-  created?: Date;
+  created: Date;
 
   @UpdateDateColumn()
   @ApiPropertyOptional({ type: String, format: 'date-time' })
-  updated?: Date;
+  updated: Date;
 }

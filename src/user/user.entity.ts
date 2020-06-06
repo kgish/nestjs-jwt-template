@@ -2,13 +2,13 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  ManyToOne,
+  OneToMany,
 } from 'typeorm';
-
+import * as bcrypt from 'bcryptjs';
 import { hash, compare } from 'bcryptjs';
 
 import { UserRO, Role } from './interfaces';
-import { OperatorEntity } from '../operator/operator.entity';
+import { PostEntity } from '../post/post.entity';
 import { BaseEntity } from '../shared/base.entity';
 
 @Entity('user')
@@ -26,12 +26,16 @@ export class UserEntity extends BaseEntity {
   @Column()
   role: Role;
 
-  @ManyToOne(type => OperatorEntity, operator => operator.users)
-  operator: OperatorEntity;
+  @Column()
+  salt: string;
+
+  @OneToMany(type => PostEntity, post => post.author, { eager: true })
+  posts: PostEntity[];
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await hash(this.password, 10);
+    this.salt = await bcrypt.genSalt();
+    this.password = await hash(this.password, this.salt);
   }
 
   toResponseObject(): UserRO {
@@ -41,6 +45,11 @@ export class UserEntity extends BaseEntity {
 
   async comparePassword(attempt: string) {
     return await compare(attempt, this.password);
+  }
+
+  async validatePassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.password;
   }
 
   static get modelName(): string {

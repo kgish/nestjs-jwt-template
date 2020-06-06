@@ -10,10 +10,11 @@ import { AppService } from './app.service';
 
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
-import { OperatorModule } from './operator/operator.module';
+import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
 import { SharedModule } from './shared/shared.module';
 
+import configuration from '../config/configuration';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -25,9 +26,13 @@ const database = process.env.DB_DATABASE || 'nestjs';
 const synchronize = process.env.DB_SYNCHRONIZE ? process.env.DB_SYNCHRONIZE === 'true' : true;
 const logging = process.env.DB_LOGGING ? process.env.DB_LOGGING === 'true' : true;
 
+console.log(`CONFIGURATION = '${JSON.stringify(configuration())}'`);
+
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      load: [ configuration ],
+    }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secretOrPrivateKey: process.env.JWT_SECRET || 'secret',
@@ -47,7 +52,7 @@ const logging = process.env.DB_LOGGING ? process.env.DB_LOGGING === 'true' : tru
       synchronize,
       logging,
     }),
-    OperatorModule,
+    PostModule,
     UserModule,
   ],
   controllers: [ AppController ],
