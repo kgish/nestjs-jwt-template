@@ -1,4 +1,4 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -15,8 +15,7 @@ import { UserRegisterRO } from './interfaces/user-register-ro.interface';
 export class UserService {
 
   constructor(
-    @Inject(forwardRef(() => AuthService))
-    readonly authService: AuthService,
+    private readonly authService: AuthService,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     @InjectRepository(OperatorEntity)
@@ -24,12 +23,12 @@ export class UserService {
   }
 
   async findAll(): Promise<UserRO[]> {
-    const users = await this.userRepository.find({ relations: ['operator'] });
+    const users = await this.userRepository.find({ relations: [ 'operator' ] });
     return users.map(user => user.toResponseObject());
   }
 
   async findOne(id: string): Promise<UserRO> {
-    const user = await this.userRepository.findOne({ where: { id }, relations: ['operator'] });
+    const user = await this.userRepository.findOne({ where: { id }, relations: [ 'operator' ] });
     if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
@@ -37,7 +36,7 @@ export class UserService {
   }
 
   async findOneUsername(username: string): Promise<UserRO> {
-    const user = await this.userRepository.findOne({ where: { username }, relations: ['operator'] });
+    const user = await this.userRepository.findOne({ where: { username }, relations: [ 'operator' ] });
     if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
@@ -81,7 +80,7 @@ export class UserService {
         created: user.created,
         updated: user.updated,
       },
-      token
+      token,
     };
   }
 
@@ -112,7 +111,7 @@ export class UserService {
         created: user.created,
         updated: user.updated,
       },
-      token
+      token,
     };
   }
 }

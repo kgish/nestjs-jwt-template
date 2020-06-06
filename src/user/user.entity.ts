@@ -36,13 +36,11 @@ export class UserEntity extends BaseEntity {
 
   toResponseObject(): UserRO {
     const {id, username, name, role, created, updated} = this;
-    const userRO: UserRO = {id, username, name, role, created, updated};
-    return userRO;
+    return {id, username, name, role, created, updated} as UserRO;
   }
 
   async comparePassword(attempt: string) {
-    const result = await compare(attempt, this.password);
-    return result;
+    return await compare(attempt, this.password);
   }
 
   static get modelName(): string {

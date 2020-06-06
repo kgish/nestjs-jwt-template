@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import {
   PipeTransform,
   Injectable,
@@ -22,13 +22,13 @@ export class ValidationPipe implements PipeTransform<any> {
     const object = plainToClass(metatype, value);
     const errors = await validate(object);
     if (errors.length > 0) {
-      throw new HttpException(`Validation failed: ${this.formatErrors(errors)}`, HttpStatus.BAD_REQUEST);
+      throw new HttpException(`Validation failed: ${ this.formatErrors(errors) }`, HttpStatus.BAD_REQUEST);
     }
     return value;
   }
 
   private toValidate(metatype): boolean {
-    const types = [String, Boolean, Number, Array, Object];
+    const types = [ String, Boolean, Number, Array, Object ];
     return !types.find(type => metatype === type);
   }
 
@@ -44,9 +44,6 @@ export class ValidationPipe implements PipeTransform<any> {
   }
 
   private isEmpty(value: any): boolean {
-    if (value && Object.keys(value).length > 0) {
-      return false;
-    }
-    return true;
+    return !(value && Object.keys(value).length > 0);
   }
 }

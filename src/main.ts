@@ -9,27 +9,37 @@ async function bootstrap() {
   const host = AppModule.host;
   const port = AppModule.port;
   const prefix = AppModule.prefix;
-  const hostDomain = AppModule.environment === 'development' ? `${host}:${port}` : host;
+  const hostDomain = AppModule.environment === 'development' ? `${ host }:${ port }` : host;
 
   // Swagger
+  const server = `${hostDomain}/${prefix}`
   const swaggerOptions = new DocumentBuilder()
     .setTitle('NestJS API')
-    .setDescription('A Simple Mock API Server for Testing the Compliancy Platform Client App')
+    .setDescription('A simple')
     .setVersion('0.0.1')
-    .setHost(hostDomain.split('//')[1])
-    .setSchemes(AppModule.isDev ? 'http' : 'https')
-    .setBasePath(prefix)
+    // setTermsOfService(termsOfService: string): this;
+    .setContact('Kiffin Gish', 'http://gishtech.com', 'kiffin.gish@planet.nl')
+    .setLicense('MIT', 'https://github.com/kgish/nestjs-jwt-template/blob/master/LICENSE.md')
+    .addServer(server)
+    // setExternalDoc(description: string, url: string): this;
+    .setExternalDoc('README', 'https://github.com/kgish/nestjs-jwt-template/blob/master/README.md')
     .addTag('root')
     .addTag('operators')
     .addTag('users')
-    .addTag('apis')
-    .addBearerAuth('Authorization', 'header')
+    // addSecurity(name: string, options: SecuritySchemeObject): this;
+    // addSecurityRequirements(name: string, requirements?: string[]): this;
+    // TODO .addBearerAuth('Authorization', 'header')
+    .addBearerAuth()
+    // addOAuth2(options?: SecuritySchemeObject, name?: string): this;
+    // addApiKey(options?: SecuritySchemeObject, name?: string): this;
+    // addBasicAuth(options?: SecuritySchemeObject, name?: string): this;
+    // addCookieAuth(cookieName?: string, options?: SecuritySchemeObject, securityName?: string): this;
     .build();
 
   const swaggerDoc = SwaggerModule.createDocument(app, swaggerOptions);
-  const swaggerDir = `${prefix}/docs`;
-  const swaggerJson = `${swaggerDir}/swagger.json`;
-  const swaggerUrl = `${hostDomain}/${swaggerJson}`;
+  const swaggerDir = `${ prefix }/docs`;
+  const swaggerJson = `${ swaggerDir }/swagger.json`;
+  const swaggerUrl = `${ hostDomain }/${ swaggerJson }`;
 
   app.use(swaggerJson, (req, res) => {
     res.send(swaggerDoc);
@@ -51,7 +61,7 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  Logger.log(`Server running on ${hostDomain}/${prefix}`, 'bootstrap');
+  Logger.log(`Server running on ${ hostDomain }/${ prefix }`, 'bootstrap');
 }
 
 bootstrap();

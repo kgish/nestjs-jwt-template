@@ -1,5 +1,4 @@
-// import { ConfigService } from 'nestjs-config';
-import 'dotenv/config';
+import { ConfigService } from '@nestjs/config';
 
 export default {
   secret: process.env.JWT_SECRET || 'secret',

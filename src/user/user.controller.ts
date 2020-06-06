@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiUseTags, ApiBearerAuth, ApiCreatedResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiCreatedResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { UserLoginDto, UserRegisterDto } from './dto';
@@ -17,21 +17,21 @@ export class UserController {
   }
 
   @Get('users')
-  @ApiUseTags('users')
+  @ApiTags('users')
   @ApiBearerAuth()
   findAll() {
     return this.userService.findAll();
   }
 
   @Get('users/:id')
-  @ApiUseTags('users')
+  @ApiTags('users')
   @ApiBearerAuth()
   findOne(@Param('id') id: string): Promise<UserRO> {
     return this.userService.findOne(id);
   }
 
   @Post('register')
-  @ApiUseTags('auth')
+  @ApiTags('auth')
   @UsePipes(new ValidationPipe())
   @ApiCreatedResponse({ type: UserRegisterDto })
   @ApiBadRequestResponse({ type: ApiException })
@@ -41,7 +41,7 @@ export class UserController {
   }
 
   @Post('login')
-  @ApiUseTags('auth')
+  @ApiTags('auth')
   @UsePipes(new ValidationPipe())
   @ApiCreatedResponse({ type: UserLoginDto })
   @ApiBadRequestResponse({ type: ApiException })

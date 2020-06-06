@@ -1,5 +1,4 @@
-// import { ConfigService } from 'nestjs-config';
-import 'dotenv/config';
+import { ConfigService } from '@nestjs/config';
 
 export default {
   host: process.env.API_HOST || 'http://localhost',

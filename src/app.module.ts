@@ -3,7 +3,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigModule } from 'nestjs-config';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -17,9 +17,6 @@ import { SharedModule } from './shared/shared.module';
 import * as path from 'path';
 import * as fs from 'fs';
 
-// import { ConfigService } from 'nestjs-config';
-import 'dotenv/config';
-
 const port = +process.env.DB_PORT || 5432;
 const host = process.env.DB_HOST || 'localhost';
 const username = process.env.DB_USERNAME || 'nestjs';
@@ -30,14 +27,12 @@ const logging = process.env.DB_LOGGING ? process.env.DB_LOGGING === 'true' : tru
 
 @Module({
   imports: [
-    ConfigModule.load(
-      path.resolve(__dirname, 'config/**/*.{ts,js}'),
-    ),
+    ConfigModule.forRoot(),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secretOrPrivateKey: process.env.JWT_SECRET || 'secret',
       signOptions: {
-        expiresIn: process.env.JWT_EXPIRES || '30m'
+        expiresIn: process.env.JWT_EXPIRES || '30m',
       },
     }),
     SharedModule,
@@ -65,10 +60,9 @@ const logging = process.env.DB_LOGGING ? process.env.DB_LOGGING === 'true' : tru
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
-    }
+    },
   ],
 })
-// export class AppModule implements NestModule {
 export class AppModule {
   static host: string;
   static port: number;
@@ -88,28 +82,21 @@ export class AppModule {
     AppModule.environment = process.env.NODE_ENV || 'development';
     AppModule.isDev = AppModule.environment === 'development';
 
-    logger.log(`API => ${JSON.stringify({
+    logger.log(`API => ${ JSON.stringify({
       host: AppModule.host,
       port: AppModule.port,
       prefix: AppModule.prefix,
       auth: AppModule.authEnabled,
       environment: AppModule.environment,
       isDev: AppModule.isDev,
-    })}`);
+    }) }`);
 
     if (fs.existsSync(dotenv)) {
-      logger.log(`Found .env at ${dotenv}`);
+      logger.log(`Found .env at ${ dotenv }`);
     } else {
-      logger.warn(`WARNING: Cannot find .env at ${dotenv}`);
+      logger.warn(`WARNING: Cannot find .env at ${ dotenv }`);
     }
 
-    logger.log(`Database => ${JSON.stringify({ port, host, username, database, synchronize, logging })}`);
-
+    logger.log(`Database => ${ JSON.stringify({ port, host, username, database, synchronize, logging }) }`);
   }
-
-  // configure(consumer: MiddlewareConsumer): void {
-  //   consumer
-  //     .apply(CorsMiddleware)
-  //     .forRoutes( { path: '*', method: RequestMethod.ALL });
-  // }
 }

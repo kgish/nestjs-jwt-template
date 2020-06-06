@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { get } from 'config';
-import { Configuration } from './configuration.enum';
 
 @Injectable()
 export class ConfigurationService {

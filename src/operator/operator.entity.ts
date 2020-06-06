@@ -6,14 +6,9 @@ import {
 
 import { UserEntity } from '../user/user.entity';
 import { BaseEntity } from '../shared/base.entity';
-import { UserRO } from '../user/interfaces';
 
 @Entity('operator')
 export class OperatorEntity extends BaseEntity {
-
-  // constructor() {
-  //   super();
-  // }
 
   @Column({ unique: true })
   code: string;

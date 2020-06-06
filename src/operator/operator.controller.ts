@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Logger,
   Param,
   Post,
@@ -14,8 +13,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
-  ApiResponse,
-  ApiUseTags,
+  ApiTags,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiBadRequestResponse,
@@ -33,11 +31,10 @@ import { ApiException } from '../shared/api-exception';
 import { Roles } from '../shared/decorators/roles.decorator';
 import { Role } from '../user/interfaces';
 import { RolesGuard } from '../shared/guards/roles.guard';
-// import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from '../shared/auth/guards/jwt-auth.guard';
 
 @ApiBearerAuth()
-@ApiUseTags('operators')
+@ApiTags('operators')
 @Controller('operators')
 export class OperatorController {
 

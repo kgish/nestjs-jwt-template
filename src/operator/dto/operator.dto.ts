@@ -1,14 +1,14 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class OperatorDto {
   @IsString()
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   readonly code: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   readonly name: string;
 }

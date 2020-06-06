@@ -1,4 +1,3 @@
-// import 'automapper-ts/dist/automapper';
 import { BaseEntity } from './base.entity';
 import { Repository } from 'typeorm';
 
