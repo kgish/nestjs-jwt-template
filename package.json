@@ -3,7 +3,13 @@
   "version": "0.0.1",
   "description": "A simple NestJS JWT template for getting started",
   "author": "Kiffin Gish",
+  "email": "kiffin.gish@planet.nl",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kgish/nestjs-jwt-template.git"
+  },
+  "keywords": ["nestjs", "jwt", "typeorm"],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -70,7 +76,8 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "uuid": "^8.1.0"
   },
   "jest": {
     "moduleFileExtensions": [

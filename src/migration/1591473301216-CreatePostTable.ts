@@ -11,5 +11,4 @@ export class CreatePostTable1591473301216 implements MigrationInterface {
       await queryRunner.query(`ALTER TABLE "post" DROP CONSTRAINT "FK_c6fb082a3114f35d0cc27c518e0"`);
       await queryRunner.query(`DROP TABLE "post"`);
     }
-
 }
