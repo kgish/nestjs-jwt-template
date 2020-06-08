@@ -9,7 +9,7 @@ export class InsertUserTable1591517889420 implements MigrationInterface {
       const username = `${ role }@example.org`;
       const name = faker.name.firstName() + ' ' + faker.name.lastName();
       const salt = await genSalt();
-      const password = await hash('admin', salt);
+      const password = await hash(role, salt);
       await queryRunner.query(`
           INSERT INTO "user" (username, name, password, role, salt)
           VALUES ($1, $2, $3, $4, $5)

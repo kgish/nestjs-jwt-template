@@ -9,7 +9,11 @@
     "type": "git",
     "url": "https://github.com/kgish/nestjs-jwt-template.git"
   },
-  "keywords": ["nestjs", "jwt", "typeorm"],
+  "keywords": [
+    "nestjs",
+    "jwt",
+    "typeorm"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
