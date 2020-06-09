@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable, Logger} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -9,11 +9,15 @@ import { UserEntity } from '../user/user.entity';
 @Injectable()
 export class PostService {
 
+  private logger: Logger;
+
   constructor(
     @InjectRepository(PostEntity)
     private postEntityRepository: Repository<PostEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>) {
+    this.logger = new Logger('PostService');
+    this.logger.log('constructor()');
   }
 
   async create(data: PostDto): Promise<PostEntity> {

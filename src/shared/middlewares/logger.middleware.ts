@@ -3,10 +3,11 @@ import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
 
-  logger: Logger;
+  private logger: Logger;
 
   constructor() {
     this.logger = new Logger('LoggerMiddleware');
+    this.logger.log('constructor()');
   }
 
   use(req: Request, res: Response, next: Function) {

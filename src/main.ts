@@ -1,45 +1,46 @@
-import { NestFactory } from '@nestjs/core';
-import { Logger } from '@nestjs/common';
-import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
+import {NestFactory} from '@nestjs/core';
+import {Logger} from '@nestjs/common';
+import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
+
+import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
+import {configuration} from './config/configuration';
+
+import {AppModule} from './app.module';
 
 async function bootstrap() {
+  const logger = new Logger('bootstrap');
+
+  const config = configuration();
+  logger.log(`config='${JSON.stringify(config)}'`);
+
   const app = await NestFactory.create(AppModule);
-  const host = AppModule.host;
-  const port = AppModule.port;
-  const prefix = AppModule.prefix;
-  const hostDomain = AppModule.environment === 'development' ? `${ host }:${ port }` : host;
+
+  const host = config.api.host;
+  const port = config.api.port;
+  const prefix = config.api.prefix;
+  const hostDomain = config.api.environment === 'development' ? `${host}:${port}` : host;
 
   // Swagger
-  const server = `${hostDomain}/${prefix}`
+  const server = `${hostDomain}/${prefix}`;
   const swaggerOptions = new DocumentBuilder()
-    .setTitle('NestJS API')
-    .setDescription('A simple')
-    .setVersion('0.0.1')
-    // setTermsOfService(termsOfService: string): this;
-    .setContact('Kiffin Gish', 'http://gishtech.com', 'kiffin.gish@planet.nl')
-    .setLicense('MIT', 'https://github.com/kgish/nestjs-jwt-template/blob/master/LICENSE.md')
+    .setTitle(config.swagger.title)
+    .setDescription(config.swagger.description)
+    .setVersion(config.swagger.version)
+    .setTermsOfService(config.swagger.termsOfService)
+    .setContact(config.swagger.contact.name, config.swagger.contact.url, config.swagger.contact.email)
+    .setLicense(config.swagger.license.description, config.swagger.license.description)
     .addServer(server)
-    // setExternalDoc(description: string, url: string): this;
-    .setExternalDoc('README', 'https://github.com/kgish/nestjs-jwt-template/blob/master/README.md')
+    .setExternalDoc(config.swagger.externalDoc.description, config.swagger.externalDoc.url)
     .addTag('root')
     .addTag('posts')
     .addTag('users')
-    // addSecurity(name: string, options: SecuritySchemeObject): this;
-    // addSecurityRequirements(name: string, requirements?: string[]): this;
     // TODO .addBearerAuth('Authorization', 'header')
-    .addBearerAuth()
-    // addOAuth2(options?: SecuritySchemeObject, name?: string): this;
-    // addApiKey(options?: SecuritySchemeObject, name?: string): this;
-    // addBasicAuth(options?: SecuritySchemeObject, name?: string): this;
-    // addCookieAuth(cookieName?: string, options?: SecuritySchemeObject, securityName?: string): this;
     .build();
 
   const swaggerDoc = SwaggerModule.createDocument(app, swaggerOptions);
-  const swaggerDir = `${ prefix }/docs`;
-  const swaggerJson = `${ swaggerDir }/swagger.json`;
-  const swaggerUrl = `${ hostDomain }/${ swaggerJson }`;
+  const swaggerDir = `${prefix}/docs`;
+  const swaggerJson = `${swaggerDir}/swagger.json`;
+  const swaggerUrl = `${hostDomain}/${swaggerJson}`;
 
   app.use(swaggerJson, (req, res) => {
     res.send(swaggerDoc);
@@ -48,9 +49,9 @@ async function bootstrap() {
   SwaggerModule.setup(swaggerDir, app, swaggerDoc, {
     swaggerUrl,
     swaggerOptions: {
-      docExpansion: 'list',
-      filter: true,
-      showRequestDuration: true,
+      docExpansion: config.swagger.options.docExpansion,
+      filter: config.swagger.options.filter,
+      showRequestDuration: config.swagger.options.showRequestDuration
     },
   });
 
@@ -61,7 +62,7 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  Logger.log(`Server running on ${ hostDomain }/${ prefix }`, 'bootstrap');
-};
+  logger.log(`Server running on ${hostDomain}/${prefix}`);
+}
 
 bootstrap();

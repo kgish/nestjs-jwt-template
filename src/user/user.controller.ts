@@ -13,7 +13,11 @@ import { UserRegisterRO } from './interfaces/user-register-ro.interface';
 @Controller()
 export class UserController {
 
+  private logger: Logger;
+
   constructor(private userService: UserService) {
+    this.logger = new Logger('userService');
+    this.logger.log('constructor()');
   }
 
   @Get('users')

@@ -1,27 +1,26 @@
-import {
-  ExecutionContext,
-  Injectable, Logger,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { AppModule } from '../../../app.module';
+import { configuration } from '../../../config/configuration';
+const config = configuration();
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
 
-  logger: Logger;
+  private enabled: boolean;
+  private logger: Logger;
 
   constructor() {
     super();
     this.logger = new Logger('JwtAuthGuard');
-    this.logger.log('constructor()');
+    this.enabled = config.auth.enabled;
+    this.logger.log(`constructor() enabled='${this.enabled}'`);
   }
 
   canActivate(context: ExecutionContext) {
-    const authEnabled = AppModule.authEnabled;
-    this.logger.log(`canActivate() authEnabled='${authEnabled}'`);
-    return authEnabled ? super.canActivate(context) : true;
+    const result = this.enabled ? super.canActivate(context) : true;
+    this.logger.log(`canActivate() => result='${result}'`);
+    return result;
   }
 
   handleRequest(err, user, info) {

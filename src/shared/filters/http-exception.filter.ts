@@ -11,10 +11,11 @@ import { ApiException } from '../api-exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  logger: Logger;
+  private logger: Logger;
 
   constructor() {
     this.logger = new Logger('HttpExceptionFilter');
+    this.logger.log('constructor()');
   }
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

@@ -1,22 +1,26 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+
 import { AuthService } from './auth.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+
+import { configuration } from '../../config/configuration';
+const config = configuration();
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
-  logger: Logger;
+  private logger: Logger;
 
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_SECRET || 'secret',
+      secretOrKey: config.auth.jwt.secret,
     });
     this.logger = new Logger('JwtStrategy');
     const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-    const secretOrKey = process.env.JWT_SECRET || 'secret';
+    const secretOrKey = config.auth.jwt.secret;
     this.logger.log(`constructor() ${JSON.stringify({ jwtFromRequest, secretOrKey })}`);
   }
 

@@ -38,9 +38,11 @@ import { JwtAuthGuard } from '../shared/auth/guards/jwt-auth.guard';
 @Controller('posts')
 export class PostController {
 
-  private logger = new Logger('PostController');
+  private logger: Logger;
 
   constructor(private postService: PostService) {
+    this.logger = new Logger('PostController');
+    this.logger.log('constructor()');
   }
 
   @Post()

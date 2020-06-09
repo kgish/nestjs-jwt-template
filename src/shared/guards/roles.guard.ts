@@ -1,29 +1,27 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus, Logger,
-} from '@nestjs/common';
+import {Reflector} from '@nestjs/core';
+import {Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus, Logger} from '@nestjs/common';
 
-import { Reflector } from '@nestjs/core';
-import { Role } from '../../user/interfaces';
-import { AppModule } from '../../app.module';
+import {Role} from '../../user/interfaces';
+
+import { configuration } from '../../config/configuration';
+const config = configuration();
 
 @Injectable()
 export class RolesGuard implements CanActivate {
 
   private logger: Logger;
+  private readonly enabled: boolean;
 
-  constructor(private readonly reflector: Reflector) {
+  constructor(private readonly reflector: Reflector ) {
     this.logger = new Logger('RolesGuard');
+    this.enabled = config.auth.enabled;
+    this.logger.log(`constructor() enabled='${this.enabled}'`);
   }
 
   canActivate(context: ExecutionContext): boolean {
-    const authEnabled: boolean = AppModule.authEnabled;
     const roles = this.reflector.get<Role[]>('roles', context.getHandler());
 
-    if (!authEnabled) {
+    if (!this.enabled) {
       this.logger.log(`canActivate() authEnabled='false' => true`);
       return true;
     }

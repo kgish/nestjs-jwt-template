@@ -16,6 +16,7 @@ export class PostEntity extends BaseEntity {
   @Column()
   body: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ManyToOne(type => UserEntity, user => user.posts, { eager: false })
   author: UserEntity;
 

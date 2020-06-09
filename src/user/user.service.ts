@@ -14,12 +14,16 @@ import { UserRegisterRO } from './interfaces/user-register-ro.interface';
 @Injectable()
 export class UserService {
 
+  private logger: Logger;
+
   constructor(
     private readonly authService: AuthService,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     @InjectRepository(PostEntity)
     private operatorRepository: Repository<PostEntity>) {
+    this.logger = new Logger('UserService');
+    this.logger.log('constructor()');
   }
 
   async findAll(): Promise<UserRO[]> {
@@ -64,13 +68,6 @@ export class UserService {
     const payload: JwtPayload = { username: user.username, name: user.name, role: user.role };
     const token = await this.authService.signPayload(payload);
 
-    // const userRO: UserRO = await this.map<UserRO>(user.toJSON());
-    //
-    // return {
-    //   user: userRO,
-    //   token,
-    // };
-
     return {
       user: {
         id: user.id,
@@ -94,13 +91,6 @@ export class UserService {
 
     const payload: JwtPayload = { username: user.username, name: user.name, role: user.role };
     const token = await this.authService.signPayload(payload);
-
-    // const userRO: UserRO = await this.map<UserRO>(user.toJSON());
-    //
-    // return {
-    //   user: userRO,
-    //   token,
-    // };
 
     return {
       user: {

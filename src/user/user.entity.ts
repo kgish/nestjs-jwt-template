@@ -29,6 +29,7 @@ export class UserEntity extends BaseEntity {
   @Column()
   salt: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @OneToMany(type => PostEntity, post => post.author, { eager: true })
   posts: PostEntity[];
 
