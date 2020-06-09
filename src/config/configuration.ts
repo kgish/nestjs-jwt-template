@@ -19,8 +19,8 @@ export const configuration = () => ({
   auth: {
     enabled: (process.env.AUTH_ENABLED || 'true') === 'true',
     jwt: {
-      secret: process.env.JWT_SECRET || 'secret',
-      expiresIn: process.env.JWT_EXPIRES || '30m',
+      secret: process.env.AUTH_JWT_SECRET || 'secret',
+      expiresIn: process.env.AUTH_JWT_EXPIRES || '30m',
     },
   },
   swagger: {
