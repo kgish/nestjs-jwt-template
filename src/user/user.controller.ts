@@ -1,14 +1,9 @@
-import {Body, Controller, Get, Logger, Param, Post, UsePipes, ValidationPipe} from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiCreatedResponse, ApiBadRequestResponse, ApiOperation } from '@nestjs/swagger';
+import {Controller, Get, Logger, Param} from '@nestjs/common';
+import {ApiTags, ApiBearerAuth} from '@nestjs/swagger';
 
-import { UserService } from './user.service';
-import { UserLoginDto, UserRegisterDto } from './dto';
-import { GetOperationId } from '../shared/utilities/get-operation-id';
-import { ApiException } from '../shared/api-exception';
-import { UserEntity } from './user.entity';
-import { UserRO } from './interfaces';
-import { UserLoginRO } from './interfaces/user-login-ro.interface';
-import { UserRegisterRO } from './interfaces/user-register-ro.interface';
+import {UserService} from './user.service';
+import {UserRO} from './interfaces';
+import {AuthService} from '../auth/auth.service';
 
 @Controller()
 export class UserController {
@@ -24,6 +19,7 @@ export class UserController {
   @ApiTags('users')
   @ApiBearerAuth()
   findAll() {
+    this.logger.log('findAll()');
     return this.userService.findAll();
   }
 
@@ -31,26 +27,7 @@ export class UserController {
   @ApiTags('users')
   @ApiBearerAuth()
   findOne(@Param('id') id: string): Promise<UserRO> {
+    this.logger.log('findOne()');
     return this.userService.findOne(id);
-  }
-
-  @Post('register')
-  @ApiTags('auth')
-  @UsePipes(new ValidationPipe())
-  @ApiCreatedResponse({ type: UserRegisterDto })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(UserEntity.modelName, 'Register'))
-  register(@Body() data: UserRegisterDto): Promise<UserRegisterRO> {
-    return this.userService.register(data);
-  }
-
-  @Post('login')
-  @ApiTags('auth')
-  @UsePipes(new ValidationPipe())
-  @ApiCreatedResponse({ type: UserLoginDto })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(UserEntity.modelName, 'Login'))
-  login(@Body() data: UserLoginDto): Promise<UserLoginRO> {
-    return this.userService.login(data);
   }
 }

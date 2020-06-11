@@ -49,7 +49,7 @@ export class PostService {
     return post;
   }
 
-  async delete(id: string): Promise<any> {
+  async delete(id: string): Promise<PostEntity> {
     const post = await this.postEntityRepository.findOne({ where: { id } });
     if (!post) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);

@@ -1,34 +1,28 @@
 import {Logger, Module} from '@nestjs/common';
-import {APP_FILTER, APP_INTERCEPTOR} from '@nestjs/core';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {JwtModule} from '@nestjs/jwt';
-import {PassportModule} from '@nestjs/passport';
+import {APP_FILTER, APP_INTERCEPTOR} from '@nestjs/core';
+
+import * as path from 'path';
+import * as fs from 'fs';
 
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 
 import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
 import {LoggingInterceptor} from './shared/interceptors/logging.interceptor';
+
+import {AuthModule} from './auth/auth.module';
 import {PostModule} from './post/post.module';
 import {UserModule} from './user/user.module';
-import {SharedModule} from './shared/shared.module';
 
-import { configuration } from './config/configuration';
+import {configuration} from './config/configuration';
+
 const config = configuration();
-
-import * as path from 'path';
-import * as fs from 'fs';
 
 @Module({
   imports: [
-    PassportModule.register({defaultStrategy: 'jwt'}),
-    JwtModule.register({
-      secretOrPrivateKey: config.auth.jwt.secret,
-      signOptions: {
-        expiresIn: config.auth.jwt.expiresIn
-      },
-    }),
-    SharedModule,
+    AuthModule,
+    PostModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: config.db.host,
@@ -40,8 +34,6 @@ import * as fs from 'fs';
       logging: config.db.logging,
       entities: [__dirname + '/**/*.entity.{ts,js}'],
     }),
-
-    PostModule,
     UserModule,
   ],
   controllers: [AppController],
@@ -64,8 +56,8 @@ export class AppModule {
   constructor() {
     this.logger = new Logger('AppModule');
     this.logger.log('constructor()');
-    const dotenv = path.resolve(__dirname, '..', '.env');
 
+    const dotenv = path.resolve(__dirname, '..', '.env');
     if (fs.existsSync(dotenv)) {
       this.logger.log(`Found .env at ${dotenv}`);
     } else {

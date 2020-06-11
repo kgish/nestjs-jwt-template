@@ -4,12 +4,11 @@ import {
   Entity,
   OneToMany,
 } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
-import { hash, compare } from 'bcryptjs';
+import {hash, compare, genSalt} from 'bcryptjs';
 
-import { UserRO, Role } from './interfaces';
-import { PostEntity } from '../post/post.entity';
-import { BaseEntity } from '../shared/base.entity';
+import {UserRO, Role} from './interfaces';
+import {PostEntity} from '../post/post.entity';
+import {BaseEntity} from '../shared/base.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -30,27 +29,27 @@ export class UserEntity extends BaseEntity {
   salt: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToMany(type => PostEntity, post => post.author, { eager: true })
+  @OneToMany(type => PostEntity, post => post.author, {eager: true})
   posts: PostEntity[];
 
   @BeforeInsert()
   async hashPassword() {
-    this.salt = await bcrypt.genSalt();
+    this.salt = await genSalt();
     this.password = await hash(this.password, this.salt);
   }
 
   toResponseObject(): UserRO {
-    const {id, username, name, role, created, updated} = this;
-    return {id, username, name, role, created, updated} as UserRO;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {password, salt, ...userRO} = this;
+    return userRO;
   }
 
-  async comparePassword(attempt: string) {
+  async comparePassword(attempt: string): Promise<boolean> {
     return await compare(attempt, this.password);
   }
 
   async validatePassword(password: string): Promise<boolean> {
-    const hash = await bcrypt.hash(password, this.salt);
-    return hash === this.password;
+    return (await hash(password, this.salt) === this.password);
   }
 
   static get modelName(): string {

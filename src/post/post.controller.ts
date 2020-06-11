@@ -31,7 +31,7 @@ import { ApiException } from '../shared/api-exception';
 import { Roles } from '../shared/decorators/roles.decorator';
 import { Role } from '../user/interfaces';
 import { RolesGuard } from '../shared/guards/roles.guard';
-import { JwtAuthGuard } from '../shared/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('posts')

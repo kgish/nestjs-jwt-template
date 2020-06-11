@@ -9,6 +9,7 @@ import { UserEntity } from '../user/user.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([PostEntity, UserEntity])],
   controllers: [PostController],
-  providers: [PostService]
+  providers: [PostService],
+  exports: [PostService]
 })
 export class PostModule {}
