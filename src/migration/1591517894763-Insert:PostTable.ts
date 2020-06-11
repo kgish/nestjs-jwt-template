@@ -1,22 +1,23 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import {MigrationInterface, QueryRunner} from 'typeorm';
 import * as faker from 'faker';
 
 export class InsertPostTable1591517894763 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const user = await queryRunner.query('SELECT * FROM "user" where "role" = $1', [ 'user' ]);
-    const authorId = user[0].id;
-    const MAX = 10;
+    const users = await queryRunner.query('SELECT * FROM "user" where "role" = $1', ['user']);
+    const num = users.length;
+    for (let i = 0; i < num; i++) {
 
-    // Create five posts and assign author to user.
-    for (let i = 0; i < MAX; i++) {
-      const title = faker.lorem.sentence(faker.random.number({ min: 4, max: 7 }));
-      const body = faker.lorem.paragraphs(faker.random.number({min: 2, max: 5}));
-      await queryRunner.query(`
-          INSERT INTO "post" (title, body, "authorId")
-          VALUES ($1, $2, $3)
-        `,
-        [ title, body, authorId ]);
+      const authorId = users[i].id;
+      const max = faker.random.number({min: 2, max: 5});
+
+      // Create max posts and assign author to user.
+      for (let j = 0; j < max; j++) {
+        const title = faker.lorem.sentence(faker.random.number({min: 4, max: 7}));
+        const body = faker.lorem.paragraphs(faker.random.number({min: 2, max: 5}));
+        await queryRunner.query(` INSERT INTO "post" (title, body, "authorId") VALUES ($1, $2, $3) `,
+          [title, body, authorId]);
+      }
     }
   }
 
