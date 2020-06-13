@@ -21,13 +21,13 @@ import {
   ApiNotFoundResponse,
 } from '@nestjs/swagger';
 
-import {PostService} from './post.service';
+import {PostsService} from './posts.service';
 
 import {ValidationPipe} from '../shared/pipes/validation.pipe';
 import {GetOperationId} from '../shared/utilities/get-operation-id';
 import {ApiException} from '../shared/api-exception';
 import {Roles} from '../shared/decorators/roles.decorator';
-import {Role} from '../user/interfaces';
+import {Role} from '../users/interfaces';
 import {RolesGuard} from '../shared/guards/roles.guard';
 import {JwtAuthGuard} from '../auth/guards';
 import {PostEntity} from "./post.entity";
@@ -37,11 +37,11 @@ import {PostRO} from "./interfaces";
 @ApiBearerAuth()
 @ApiTags('posts')
 @Controller('posts')
-export class PostController {
+export class PostsController {
 
   private logger: Logger;
 
-  constructor(private postService: PostService) {
+  constructor(private postsService: PostsService) {
     this.logger = new Logger('PostController');
     this.logger.log('constructor()');
   }
@@ -56,7 +56,7 @@ export class PostController {
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Create'))
   create(@Body() data: PostDto): Promise<PostRO> {
     this.logger.log(JSON.stringify(data));
-    return this.postService.create(data);
+    return this.postsService.create(data);
   }
 
   @Get()
@@ -67,7 +67,7 @@ export class PostController {
   @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'GetAll'))
   findAll(): Promise<PostRO[]> {
-    return this.postService.findAll();
+    return this.postsService.findAll();
   }
 
   @Get(':id')
@@ -79,7 +79,7 @@ export class PostController {
   @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'GetOne'))
   findOne(@Param('id') id: string): Promise<PostRO> {
-    return this.postService.findOne(id);
+    return this.postsService.findOne(id);
   }
 
   @Put()
@@ -93,7 +93,7 @@ export class PostController {
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Update'))
   update(@Param('id') id: string, @Body() data: Partial<PostDto>): Promise<PostRO> {
     this.logger.log(JSON.stringify(data));
-    return this.postService.update(id, data);
+    return this.postsService.update(id, data);
   }
 
   @Delete()
@@ -105,6 +105,6 @@ export class PostController {
   @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Delete'))
   delete(@Param('id') id: string): Promise<PostRO> {
-    return this.postService.delete(id);
+    return this.postsService.delete(id);
   }
 }

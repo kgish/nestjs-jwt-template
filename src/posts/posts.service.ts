@@ -7,7 +7,7 @@ import {PostRO} from './interfaces';
 import {PostDto} from './dto';
 
 @Injectable()
-export class PostService {
+export class PostsService {
 
   private logger: Logger;
 

@@ -1,7 +1,7 @@
 import {Reflector} from '@nestjs/core';
 import {Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus, Logger} from '@nestjs/common';
 
-import {Role} from '../../user/interfaces';
+import {Role} from '../../users/interfaces';
 
 import { configuration } from '../../config/configuration';
 const config = configuration();

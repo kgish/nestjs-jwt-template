@@ -8,7 +8,7 @@ import {
   ApiOperation, ApiOkResponse, ApiNotFoundResponse
 } from '@nestjs/swagger';
 
-import {UserService} from './user.service';
+import {UsersService} from './users.service';
 import {Role, UserRO} from './interfaces';
 import {Roles} from '../shared/decorators/roles.decorator';
 import {JwtAuthGuard} from '../auth/guards';
@@ -22,11 +22,11 @@ import {UserDto} from "./dto";
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
-export class UserController {
+export class UsersController {
 
   private logger: Logger;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UsersService) {
     this.logger = new Logger('userService');
     this.logger.log('constructor()');
   }

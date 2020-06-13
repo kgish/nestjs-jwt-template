@@ -3,7 +3,7 @@ import {PassportStrategy} from '@nestjs/passport';
 import {ExtractJwt, Strategy} from 'passport-jwt';
 
 import {configuration} from '../../config/configuration';
-import {UserRO} from "../../user/interfaces";
+import {UserRO} from "../../users/interfaces";
 import {AuthService} from "../auth.service";
 
 const config = configuration();

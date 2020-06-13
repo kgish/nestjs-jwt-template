@@ -12,8 +12,8 @@ import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
 import {LoggingInterceptor} from './shared/interceptors/logging.interceptor';
 
 import {AuthModule} from './auth/auth.module';
-import {PostModule} from './post/post.module';
-import {UserModule} from './user/user.module';
+import {PostsModule} from './posts';
+import {UsersModule} from './users/users.module';
 
 import {configuration} from './config/configuration';
 
@@ -22,7 +22,7 @@ const config = configuration();
 @Module({
   imports: [
     AuthModule,
-    PostModule,
+    PostsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: config.db.host,
@@ -34,7 +34,7 @@ const config = configuration();
       logging: config.db.logging,
       entities: [__dirname + '/**/*.entity.{ts,js}'],
     }),
-    UserModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

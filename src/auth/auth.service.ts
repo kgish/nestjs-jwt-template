@@ -2,17 +2,17 @@ import {HttpException, HttpStatus, Injectable, Logger} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
 
 import {AuthLoginDto} from './dto';
-import {UserService} from '../user/user.service';
+import {UsersService} from '../users/users.service';
 import {AuthLoginRO, JwtPayload} from './interfaces';
-import {UserEntity} from '../user/user.entity';
-import {Role, UserRO} from '../user/interfaces';
+import {UserEntity} from '../users/user.entity';
+import {Role, UserRO} from '../users/interfaces';
 
 @Injectable()
 export class AuthService {
 
   private logger: Logger;
 
-  constructor(private readonly userService: UserService,
+  constructor(private readonly userService: UsersService,
               private readonly jwtService: JwtService) {
     this.logger = new Logger('AuthService');
     this.logger.log('constructor()');

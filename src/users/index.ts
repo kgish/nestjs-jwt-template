@@ -1,3 +1,3 @@
 export * from './dto';
 export * from './interfaces';
-export * from './user.module';
+export * from './users.module';

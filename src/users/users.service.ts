@@ -7,7 +7,7 @@ import {UserRO} from './interfaces';
 import {UserDto} from './dto';
 
 @Injectable()
-export class UserService {
+export class UsersService {
 
   private logger: Logger;
 
@@ -17,7 +17,6 @@ export class UserService {
     this.logger = new Logger('UserService');
     this.logger.log('constructor()');
   }
-
 
   async create(data: UserDto): Promise<UserRO> {
     const userRO = await this.userRepository.create(data);
@@ -30,11 +29,11 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<UserRO> {
-    const post = await this.userRepository.findOne({where: {id}, relations: ['author']});
-    if (!post) {
+    const user = await this.userRepository.findOne({where: {id}, relations: ['author']});
+    if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-    return post;
+    return user;
   }
 
   async findOneUsername(username: string): Promise<UserEntity> {
@@ -46,22 +45,22 @@ export class UserService {
   }
 
   async update(id: string, data: Partial<UserDto>): Promise<UserRO> {
-    let post = await this.userRepository.findOne({where: {id}});
-    if (!post) {
+    let user = await this.userRepository.findOne({where: {id}});
+    if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
     await this.userRepository.update({id}, data);
-    post = await this.userRepository.findOne({where: {id}});
-    return post;
+    user = await this.userRepository.findOne({where: {id}});
+    return user;
   }
 
   async delete(id: string): Promise<UserRO> {
-    const post = await this.userRepository.findOne({where: {id}});
-    if (!post) {
+    const user = await this.userRepository.findOne({where: {id}});
+    if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
     await this.userRepository.delete({id});
-    return post;
+    return user;
   }
 }
 

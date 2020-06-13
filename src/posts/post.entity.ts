@@ -1,12 +1,7 @@
-import {
-  Column,
-  Entity,
-  ManyToOne
-} from 'typeorm';
+import {Column, Entity, ManyToOne} from 'typeorm';
 
-import {UserEntity} from '../user/user.entity';
+import {UserEntity} from '../users/user.entity';
 import {BaseEntity} from '../shared/base.entity';
-import {UserRO} from "../user/interfaces";
 import {PostRO} from "./interfaces";
 
 @Entity('post')
