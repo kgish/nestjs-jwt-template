@@ -7,8 +7,8 @@ import {
 import {hash, compare, genSalt} from 'bcryptjs';
 
 import {UserRO, Role} from './interfaces';
-import {PostEntity} from '../post/post.entity';
 import {BaseEntity} from '../shared/base.entity';
+import {PostEntity} from "../post/post.entity";
 
 @Entity('user')
 export class UserEntity extends BaseEntity {

@@ -21,17 +21,18 @@ import {
   ApiNotFoundResponse,
 } from '@nestjs/swagger';
 
-import { PostService } from './post.service';
-import { PostEntity } from './post.entity';
-import { PostDto } from './dto/post.dto';
+import {PostService} from './post.service';
 
-import { ValidationPipe } from '../shared/pipes/validation.pipe';
-import { GetOperationId } from '../shared/utilities/get-operation-id';
-import { ApiException } from '../shared/api-exception';
-import { Roles } from '../shared/decorators/roles.decorator';
-import { Role } from '../user/interfaces';
-import { RolesGuard } from '../shared/guards/roles.guard';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import {ValidationPipe} from '../shared/pipes/validation.pipe';
+import {GetOperationId} from '../shared/utilities/get-operation-id';
+import {ApiException} from '../shared/api-exception';
+import {Roles} from '../shared/decorators/roles.decorator';
+import {Role} from '../user/interfaces';
+import {RolesGuard} from '../shared/guards/roles.guard';
+import {JwtAuthGuard} from '../auth/guards';
+import {PostEntity} from "./post.entity";
+import {PostDto} from "./dto";
+import {PostRO} from "./interfaces";
 
 @ApiBearerAuth()
 @ApiTags('posts')
@@ -49,11 +50,11 @@ export class PostController {
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe())
-  @ApiCreatedResponse({ type: PostEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiCreatedResponse({type: PostEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Create'))
-  create(@Body() data: PostDto): Promise<PostEntity> {
+  create(@Body() data: PostDto): Promise<PostRO> {
     this.logger.log(JSON.stringify(data));
     return this.postService.create(data);
   }
@@ -61,23 +62,23 @@ export class PostController {
   @Get()
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: PostEntity, isArray: true })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiOkResponse({type: PostEntity, isArray: true})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'GetAll'))
-  findAll(): Promise<PostEntity[]> {
+  findAll(): Promise<PostRO[]> {
     return this.postService.findAll();
   }
 
   @Get(':id')
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: PostEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiNotFoundResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiOkResponse({type: PostEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiNotFoundResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'GetOne'))
-  findOne(@Param('id') id: string): Promise<PostEntity> {
+  findOne(@Param('id') id: string): Promise<PostRO> {
     return this.postService.findOne(id);
   }
 
@@ -85,13 +86,12 @@ export class PostController {
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe())
-  @ApiOkResponse({ type: PostEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiNotFoundResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
-  @ApiOperation(GetOperationId(PostEntity.modelName, 'GetOne'))
+  @ApiOkResponse({type: PostEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiNotFoundResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Update'))
-  update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
+  update(@Param('id') id: string, @Body() data: Partial<PostDto>): Promise<PostRO> {
     this.logger.log(JSON.stringify(data));
     return this.postService.update(id, data);
   }
@@ -99,12 +99,12 @@ export class PostController {
   @Delete()
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: PostEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiNotFoundResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiOkResponse({type: PostEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiNotFoundResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Delete'))
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: string): Promise<PostRO> {
     return this.postService.delete(id);
   }
 }

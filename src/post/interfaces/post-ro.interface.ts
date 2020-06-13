@@ -1,3 +1,4 @@
+// Post response object
 export class PostRO {
   title: string;
   body: string;

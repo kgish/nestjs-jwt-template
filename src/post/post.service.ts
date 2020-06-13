@@ -1,10 +1,10 @@
 import {HttpException, HttpStatus, Injectable, Logger} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
 
-import { PostDto } from './dto/post.dto';
-import { PostEntity } from './post.entity';
-import { UserEntity } from '../user/user.entity';
+import {PostEntity} from './post.entity';
+import {PostRO} from './interfaces';
+import {PostDto} from './dto';
 
 @Injectable()
 export class PostService {
@@ -13,48 +13,45 @@ export class PostService {
 
   constructor(
     @InjectRepository(PostEntity)
-    private postEntityRepository: Repository<PostEntity>,
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>) {
+    private postRepository: Repository<PostEntity>) {
     this.logger = new Logger('PostService');
     this.logger.log('constructor()');
   }
 
-  async create(data: PostDto): Promise<PostEntity> {
-    const post = await this.postEntityRepository.create(data);
-    await this.postEntityRepository.save(post);
+  async create(data: PostDto): Promise<PostRO> {
+    const post = await this.postRepository.create(data);
+    await this.postRepository.save(post);
     return post;
   }
 
-  async findAll(): Promise<PostEntity[]> {
-    const posts = await this.postEntityRepository.find({ relations: ['author'] });
-    return posts;
+  async findAll(): Promise<PostRO[]> {
+    return await this.postRepository.find();
   }
 
-  async findOne(id: string): Promise<PostEntity> {
-    const post = await this.postEntityRepository.findOne({ where: { id }, relations: ['author'] });
+  async findOne(id: string): Promise<PostRO> {
+    const post = await this.postRepository.findOne({where: {id}, relations: ['author']});
     if (!post) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
     return post;
   }
 
-  async update(id: string, data: Partial<PostDto>): Promise<PostEntity> {
-    let post = await this.postEntityRepository.findOne({ where: { id } });
+  async update(id: string, data: Partial<PostDto>): Promise<PostRO> {
+    let post = await this.postRepository.findOne({where: {id}});
     if (!post) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-    await this.postEntityRepository.update({ id }, data);
-    post = await this.postEntityRepository.findOne({ where: { id } });
+    await this.postRepository.update({id}, data);
+    post = await this.postRepository.findOne({where: {id}});
     return post;
   }
 
-  async delete(id: string): Promise<PostEntity> {
-    const post = await this.postEntityRepository.findOne({ where: { id } });
+  async delete(id: string): Promise<PostRO> {
+    const post = await this.postRepository.findOne({where: {id}});
     if (!post) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-    await this.postEntityRepository.delete({ id });
+    await this.postRepository.delete({id});
     return post;
   }
 }

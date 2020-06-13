@@ -1,10 +1,13 @@
-import {Body, Controller, Get, Logger, Post, Request, UseGuards} from '@nestjs/common';
+import {Controller, Get, Logger, Post, Request, UseGuards} from '@nestjs/common';
 import {ApiTags} from '@nestjs/swagger';
 
 import {AuthService} from './auth/auth.service';
+import {JwtAuthGuard, LocalAuthGuard} from './auth/guards';
+import {UserService} from "./user/user.service";
+import {UserRO} from "./user/interfaces";
+import {AuthLoginRO} from "./auth/interfaces";
 
 import {AppService} from './app.service';
-import {JwtAuthGuard, LocalAuthGuard} from './auth/guards';
 
 @ApiTags('root')
 @Controller()
@@ -12,6 +15,7 @@ export class AppController {
   private logger: Logger;
 
   constructor(private readonly appService: AppService,
+              private readonly userService: UserService,
               private readonly authService: AuthService) {
     this.logger = new Logger('AppController');
     this.logger.log('constructor()');
@@ -24,15 +28,18 @@ export class AppController {
   }
 
   @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
-  async login(@Body() body) {
-    this.logger.log(`login() body='${JSON.stringify(body)}'`);
-    return this.authService.login(body);
+  @Post('login')
+  async login(@Request() req): Promise<AuthLoginRO> {
+    this.logger.log('login()');
+    return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async profile(@Request() req): Promise<UserRO> {
+    this.logger.log('profile()');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {password, salt, posts, ...userRO} = await this.userService.findOneUsername(req.user.username);
+    return userRO;
   }
 }

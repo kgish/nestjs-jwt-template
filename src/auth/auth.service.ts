@@ -3,14 +3,14 @@ import {JwtService} from '@nestjs/jwt';
 
 import {AuthLoginDto} from './dto';
 import {UserService} from '../user/user.service';
-import {AuthLoginRO} from './interfaces';
+import {AuthLoginRO, JwtPayload} from './interfaces';
 import {UserEntity} from '../user/user.entity';
-import {UserRO} from '../user/interfaces';
+import {Role, UserRO} from '../user/interfaces';
 
 @Injectable()
 export class AuthService {
 
-  logger: Logger;
+  private logger: Logger;
 
   constructor(private readonly userService: UserService,
               private readonly jwtService: JwtService) {
@@ -31,25 +31,18 @@ export class AuthService {
     return userRO;
   }
 
-  async login(authLoginDto: AuthLoginDto): Promise<AuthLoginRO> {
-    const username = authLoginDto.username;
-    const pass = authLoginDto.password;
-    this.logger.log(`login(username='${username}',password='${pass}')`);
-
-    const userEntity = await this.userService.findOneUsername(username);
-
-    if (!userEntity || (!await userEntity.comparePassword(authLoginDto.password))) {
-      this.logger.log(`login(username='${username}',password='${pass}') => 400 Invalid credentials}`);
-      throw new HttpException('Invalid credentials', HttpStatus.BAD_REQUEST);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {password, salt, ...userRO} = userEntity;
-    const authLoginRO = {
-      user: userRO,
-      token: this.jwtService.sign(userRO),
+  async login(user: UserEntity): Promise<AuthLoginRO> {
+    const payload: JwtPayload = {id: user.id, username: user.username, role: user.role};
+    const authLoginRO: AuthLoginRO = {
+      user: {
+        id: user.id,
+        username: user.username,
+        name: user.name,
+        role: user.role,
+      },
+      token: this.jwtService.sign(payload)
     };
-    this.logger.log(`login(username='${username}',password='${pass}') => authLoginRO='${JSON.stringify(authLoginRO)}'}`);
+    this.logger.log(`login(user='${JSON.stringify(user)}') => authLoginRO='${JSON.stringify(authLoginRO)}'`);
     return authLoginRO;
   }
 }
