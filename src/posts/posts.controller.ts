@@ -42,7 +42,7 @@ export class PostsController {
   private logger: Logger;
 
   constructor(private postsService: PostsService) {
-    this.logger = new Logger('PostController');
+    this.logger = new Logger('PostsController');
     this.logger.log('constructor()');
   }
 

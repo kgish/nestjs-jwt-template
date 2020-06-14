@@ -26,8 +26,8 @@ export class UsersController {
 
   private logger: Logger;
 
-  constructor(private userService: UsersService) {
-    this.logger = new Logger('userService');
+  constructor(private usersService: UsersService) {
+    this.logger = new Logger('usersService');
     this.logger.log('constructor()');
   }
 
@@ -41,7 +41,7 @@ export class UsersController {
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Create'))
   create(@Body() data: UserDto): Promise<UserRO> {
     this.logger.log(JSON.stringify(data));
-    return this.userService.create(data);
+    return this.usersService.create(data);
   }
 
   @Get()
@@ -52,7 +52,7 @@ export class UsersController {
   @ApiForbiddenResponse({ type: ApiException })
   @ApiOperation(GetOperationId(UserEntity.modelName, 'GetAll'))
   findAll(): Promise<UserRO[]> {
-    return this.userService.findAll();
+    return this.usersService.findAll();
   }
 
   @Get(':id')
@@ -64,7 +64,7 @@ export class UsersController {
   @ApiForbiddenResponse({ type: ApiException })
   @ApiOperation(GetOperationId(UserEntity.modelName, 'GetOne'))
   findOne(@Param('id') id: string): Promise<UserRO> {
-    return this.userService.findOne(id);
+    return this.usersService.findOne(id);
   }
 
   @Put()
@@ -78,7 +78,7 @@ export class UsersController {
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Update'))
   update(@Param('id') id: string, @Body() data: Partial<UserDto>): Promise<UserRO> {
     this.logger.log(JSON.stringify(data));
-    return this.userService.update(id, data);
+    return this.usersService.update(id, data);
   }
 
   @Delete()
@@ -90,6 +90,6 @@ export class UsersController {
   @ApiForbiddenResponse({ type: ApiException })
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Delete'))
   delete(@Param('id') id: string): Promise<UserRO> {
-    return this.userService.delete(id);
+    return this.usersService.delete(id);
   }
 }

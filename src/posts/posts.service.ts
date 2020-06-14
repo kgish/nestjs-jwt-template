@@ -14,7 +14,7 @@ export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
     private postRepository: Repository<PostEntity>) {
-    this.logger = new Logger('PostService');
+    this.logger = new Logger('PostsService');
     this.logger.log('constructor()');
   }
 

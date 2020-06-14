@@ -40,7 +40,7 @@ export class UserEntity extends BaseEntity {
 
   toResponseObject(): UserRO {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {password, salt, ...userRO} = this;
+    const {password, salt, posts, ...userRO} = this;
     return userRO;
   }
 

@@ -15,7 +15,7 @@ export class AppController {
   private logger: Logger;
 
   constructor(private readonly appService: AppService,
-              private readonly userService: UsersService,
+              private readonly usersService: UsersService,
               private readonly authService: AuthService) {
     this.logger = new Logger('AppController');
     this.logger.log('constructor()');
@@ -38,8 +38,7 @@ export class AppController {
   @Get('profile')
   async profile(@Request() req): Promise<UserRO> {
     this.logger.log('profile()');
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {password, salt, posts, ...userRO} = await this.userService.findOneUsername(req.user.username);
-    return userRO;
+    const userEntity = await this.usersService.findOneUsername(req.user.username);
+    return userEntity.toResponseObject();
   }
 }

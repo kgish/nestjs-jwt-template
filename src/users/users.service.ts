@@ -14,7 +14,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>) {
-    this.logger = new Logger('UserService');
+    this.logger = new Logger('UsersService');
     this.logger.log('constructor()');
   }
 
