@@ -21,19 +21,20 @@ export class UsersService {
   async create(data: UserDto): Promise<UserRO> {
     const userRO = await this.userRepository.create(data);
     await this.userRepository.save(userRO);
-    return userRO;
+    return userRO.toResponseObject();
   }
 
   async findAll(): Promise<UserRO[]> {
-    return await this.userRepository.find();
+    const users: UserEntity[] = await this.userRepository.find();
+    return users.map(user => user.toResponseObject());
   }
 
   async findOne(id: string): Promise<UserRO> {
-    const user = await this.userRepository.findOne({where: {id}, relations: ['author']});
+    const user = await this.userRepository.findOne({where: {id}});
     if (!user) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-    return user;
+    return user.toResponseObject();
   }
 
   async findOneUsername(username: string): Promise<UserEntity> {
@@ -51,7 +52,7 @@ export class UsersService {
     }
     await this.userRepository.update({id}, data);
     user = await this.userRepository.findOne({where: {id}});
-    return user;
+    return user.toResponseObject();
   }
 
   async delete(id: string): Promise<UserRO> {
@@ -60,7 +61,7 @@ export class UsersService {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
     await this.userRepository.delete({id});
-    return user;
+    return user.toResponseObject();
   }
 }
 

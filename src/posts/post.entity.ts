@@ -14,7 +14,7 @@ export class PostEntity extends BaseEntity {
   body: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ManyToOne(type => UserEntity, user => user.posts, {eager: false})
+  @ManyToOne(type => UserEntity, user => user.posts)
   author: UserEntity;
 
   @Column()
@@ -23,7 +23,6 @@ export class PostEntity extends BaseEntity {
   toResponseObject(): PostRO {
     return this;
   }
-
 
   static get modelName(): string {
     return 'Post';

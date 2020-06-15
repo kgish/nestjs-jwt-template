@@ -29,7 +29,7 @@ export class UserEntity extends BaseEntity {
   salt: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToMany(type => PostEntity, post => post.author, {eager: true})
+  @OneToMany(type => PostEntity, post => post.author)
   posts: PostEntity[];
 
   @BeforeInsert()
@@ -40,7 +40,7 @@ export class UserEntity extends BaseEntity {
 
   toResponseObject(): UserRO {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {password, salt, posts, ...userRO} = this;
+    const {password, salt, ...userRO} = this;
     return userRO;
   }
 
