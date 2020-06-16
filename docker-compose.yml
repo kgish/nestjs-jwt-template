@@ -35,3 +35,9 @@ services:
 #
 networks:
   nestjs-network:
+#networks:
+#  default:
+#    driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 172.16.57.0/24

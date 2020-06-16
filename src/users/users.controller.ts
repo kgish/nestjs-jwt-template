@@ -27,7 +27,7 @@ export class UsersController {
   private logger: Logger;
 
   constructor(private usersService: UsersService) {
-    this.logger = new Logger('usersService');
+    this.logger = new Logger('usersController');
     this.logger.log('constructor()');
   }
 
@@ -35,61 +35,74 @@ export class UsersController {
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe())
-  @ApiCreatedResponse({ type: UserEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiCreatedResponse({type: UserEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Create'))
   create(@Body() data: UserDto): Promise<UserRO> {
-    this.logger.log(JSON.stringify(data));
-    return this.usersService.create(data);
+    this.logger.log(`POST create(data='${JSON.stringify(data)}')`);
+    const result = this.usersService.create(data);
+    this.logger.log(`POST create(data='${JSON.stringify(data)}') => result='${JSON.stringify(result)}'`);
+    return result;
   }
 
   @Get()
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: UserEntity, isArray: true })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiOkResponse({type: UserEntity, isArray: true})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(UserEntity.modelName, 'GetAll'))
   findAll(): Promise<UserRO[]> {
-    return this.usersService.findAll();
+    this.logger.log('GET findAll()');
+    const result = this.usersService.findAll();
+    this.logger.log(`GET findAll() => result='${JSON.stringify(result)}'`);
+    return result;
   }
 
   @Get(':id')
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: UserEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiNotFoundResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiOkResponse({type: UserEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiNotFoundResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(UserEntity.modelName, 'GetOne'))
   findOne(@Param('id') id: string): Promise<UserRO> {
-    return this.usersService.findOne(id);
+    this.logger.log(`GET findOne(id='${id}')`);
+    const result = this.usersService.findOne(id);
+    this.logger.log(`GET findOne(id='${id}') result='${JSON.stringify(result)}'`);
+    return result;
   }
 
   @Put()
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe())
-  @ApiOkResponse({ type: UserEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiNotFoundResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiOkResponse({type: UserEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiNotFoundResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Update'))
   update(@Param('id') id: string, @Body() data: Partial<UserDto>): Promise<UserRO> {
-    this.logger.log(JSON.stringify(data));
-    return this.usersService.update(id, data);
+    this.logger.log(`PUT update(id='${id}',data='${JSON.stringify(data)}')`);
+    const result = this.usersService.update(id, data);
+    this.logger.log(`PUT update(id='${id}',data='${JSON.stringify(data)}') result='${JSON.stringify(result)}'`);
+    return result;
   }
 
   @Delete()
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
-  @ApiOkResponse({ type: UserEntity })
-  @ApiBadRequestResponse({ type: ApiException })
-  @ApiNotFoundResponse({ type: ApiException })
-  @ApiForbiddenResponse({ type: ApiException })
+  @ApiOkResponse({type: UserEntity})
+  @ApiBadRequestResponse({type: ApiException})
+  @ApiNotFoundResponse({type: ApiException})
+  @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Delete'))
   delete(@Param('id') id: string): Promise<UserRO> {
-    return this.usersService.delete(id);
+    this.logger.log(`DELETE delete(id='${id}')`);
+    const result = this.usersService.delete(id);
+    this.logger.log(`DELETE delete(id='${id}') result='${JSON.stringify(result)}'`);
+    return result;
   }
 }
