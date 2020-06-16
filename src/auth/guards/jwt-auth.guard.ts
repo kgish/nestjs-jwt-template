@@ -8,7 +8,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor() {
     super();
     this.logger = new Logger('JwtAuthGuard');
-    this.logger.log('constructor()');
   }
 
   canActivate(context: ExecutionContext) {

@@ -1,4 +1,4 @@
-import {Role, UserRO} from '../../users/interfaces';
+import {Role} from '../../users';
 
 export class AuthLoginRO {
   user: {

@@ -15,7 +15,6 @@ export class PostsService {
     @InjectRepository(PostEntity)
     private postRepository: Repository<PostEntity>) {
     this.logger = new Logger('PostsService');
-    this.logger.log('constructor()');
   }
 
   async create(data: PostDto): Promise<PostRO> {

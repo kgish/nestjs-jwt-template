@@ -1,12 +1,11 @@
 import {JwtModule} from '@nestjs/jwt';
 import {PassportModule} from '@nestjs/passport';
 import {Test, TestingModule} from '@nestjs/testing';
-import {UsersModule} from '../users/users.module';
+import {UsersModule} from '../users';
 import {AuthService} from './auth.service';
-import {JwtStrategy} from './strategies/jwt.strategy';
-import {LocalStrategy} from './strategies/local.strategy';
+import {JwtStrategy,LocalStrategy} from './strategies';
 
-import {configuration} from '../config/configuration';
+import {configuration} from '../config';
 
 const config = configuration();
 

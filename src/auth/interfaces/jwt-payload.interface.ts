@@ -1,4 +1,4 @@
-import {Role} from '../../users/interfaces';
+import {Role} from '../../users';
 
 export interface JwtPayload {
   id: string;

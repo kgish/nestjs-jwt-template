@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Logger,
-  Param,
-  Post,
-  Put, UseGuards,
-  UsePipes,
-} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Logger, Param, Post, Put, UseGuards, UsePipes} from '@nestjs/common';
 
 import {
   ApiBearerAuth,
@@ -23,16 +13,13 @@ import {
 
 import {PostsService} from './posts.service';
 
-import {ValidationPipe} from '../shared/pipes/validation.pipe';
-import {GetOperationId} from '../shared/utilities/get-operation-id';
+import {ValidationPipe, GetOperationId, Roles, RolesGuard} from '../shared';
 import {ApiException} from '../shared/api-exception';
-import {Roles} from '../shared/decorators/roles.decorator';
-import {Role} from '../users/interfaces';
-import {RolesGuard} from '../shared/guards/roles.guard';
+import {Role} from '../users';
 import {JwtAuthGuard} from '../auth/guards';
-import {PostEntity} from "./post.entity";
-import {PostDto} from "./dto";
-import {PostRO} from "./interfaces";
+import {PostEntity} from './post.entity';
+import {PostDto} from './dto';
+import {PostRO} from './interfaces';
 
 @ApiBearerAuth()
 @ApiTags('posts')
@@ -43,7 +30,6 @@ export class PostsController {
 
   constructor(private postsService: PostsService) {
     this.logger = new Logger('PostsController');
-    this.logger.log('constructor()');
   }
 
   @Post()

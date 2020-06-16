@@ -12,7 +12,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super();
     this.logger = new Logger('LocalStrategy');
-    this.logger.log('constructor()');
   }
 
   async validate(username: string, password: string): Promise<UserRO> {

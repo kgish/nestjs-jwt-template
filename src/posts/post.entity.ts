@@ -2,7 +2,7 @@ import {Column, Entity, ManyToOne} from 'typeorm';
 
 import {UserEntity} from '../users/user.entity';
 import {BaseEntity} from '../shared/base.entity';
-import {PostRO} from "./interfaces";
+import {PostRO} from './interfaces';
 
 @Entity('post')
 export class PostEntity extends BaseEntity {

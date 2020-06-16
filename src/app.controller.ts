@@ -3,9 +3,9 @@ import {ApiTags} from '@nestjs/swagger';
 
 import {AuthService} from './auth/auth.service';
 import {JwtAuthGuard, LocalAuthGuard} from './auth/guards';
-import {UsersService} from "./users/users.service";
-import {UserRO} from "./users/interfaces";
-import {AuthLoginRO} from "./auth/interfaces";
+import {UsersService} from './users/users.service';
+import {UserRO} from './users/interfaces';
+import {AuthLoginRO} from './auth/interfaces';
 
 import {AppService} from './app.service';
 
@@ -18,7 +18,6 @@ export class AppController {
               private readonly usersService: UsersService,
               private readonly authService: AuthService) {
     this.logger = new Logger('AppController');
-    this.logger.log('constructor()');
   }
 
   @Get()

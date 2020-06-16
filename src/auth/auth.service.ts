@@ -2,9 +2,9 @@ import {Injectable, Logger} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
 
 import {UsersService} from '../users/users.service';
-import {AuthLoginRO, JwtPayload} from './interfaces';
 import {UserEntity} from '../users/user.entity';
-import {UserRO} from '../users/interfaces';
+import {UserRO} from '../users';
+import {AuthLoginRO, JwtPayload} from './interfaces';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,6 @@ export class AuthService {
   constructor(private readonly usersService: UsersService,
               private readonly jwtService: JwtService) {
     this.logger = new Logger('AuthService');
-    this.logger.log('constructor()');
   }
 
   async validateUser(username: string, password: string): Promise<UserRO | null> {

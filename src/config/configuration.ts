@@ -1,3 +1,5 @@
+import {LogLevel} from '@nestjs/common';
+
 require('dotenv').config();
 
 export const configuration = () => ({
@@ -5,7 +7,11 @@ export const configuration = () => ({
     host: process.env.API_HOST || 'http://localhost',
     port: process.env.API_PORT || 3000,
     prefix: process.env.API_PREFIX || 'api/v1',
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    logger: {
+      enabled: (process.env.API_LOGGER_ENABLED || 'true') === 'true',
+      levels: (process.env.API_LOGGER_LEVELS || 'log,error,warn,debug,verbose').split(',') as LogLevel[]
+    }
   },
   db: {
     host: process.env.DB_HOST,

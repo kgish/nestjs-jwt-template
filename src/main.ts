@@ -2,8 +2,8 @@ import {NestFactory} from '@nestjs/core';
 import {Logger} from '@nestjs/common';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 
-import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
-import {configuration} from './config/configuration';
+import {HttpExceptionFilter} from './shared';
+import {configuration} from './config';
 
 import {AppModule} from './app.module';
 
@@ -13,7 +13,9 @@ async function bootstrap() {
   const config = configuration();
   logger.log(`config='${JSON.stringify(config)}'`);
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: config.api.logger.enabled ? config.api.logger.levels : false
+  });
 
   const host = config.api.host;
   const port = config.api.port;

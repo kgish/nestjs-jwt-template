@@ -5,19 +5,19 @@ import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiForbiddenResponse,
-  ApiOperation, ApiOkResponse, ApiNotFoundResponse
+  ApiOperation,
+  ApiOkResponse,
+  ApiNotFoundResponse
 } from '@nestjs/swagger';
 
 import {UsersService} from './users.service';
 import {Role, UserRO} from './interfaces';
-import {Roles} from '../shared/decorators/roles.decorator';
+import {Roles,RolesGuard,ValidationPipe} from '../shared';
 import {JwtAuthGuard} from '../auth/guards';
-import {RolesGuard} from '../shared/guards/roles.guard';
-import {ValidationPipe} from '../shared/pipes/validation.pipe';
 import {UserEntity} from './user.entity';
+import {GetOperationId} from '../shared';
 import {ApiException} from '../shared/api-exception';
-import {GetOperationId} from '../shared/utilities/get-operation-id';
-import {UserDto} from "./dto";
+import {UserDto} from './dto';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -28,7 +28,6 @@ export class UsersController {
 
   constructor(private usersService: UsersService) {
     this.logger = new Logger('usersController');
-    this.logger.log('constructor()');
   }
 
   @Post()

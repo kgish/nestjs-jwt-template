@@ -6,7 +6,7 @@ import {UsersModule} from '../users/users.module';
 import {AuthService} from './auth.service';
 import {JwtStrategy, LocalStrategy} from './strategies';
 
-import {configuration} from '../config/configuration';
+import {configuration} from '../config';
 
 const config = configuration();
 

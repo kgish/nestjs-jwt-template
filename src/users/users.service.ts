@@ -15,7 +15,6 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>) {
     this.logger = new Logger('UsersService');
-    this.logger.log('constructor()');
   }
 
   async create(data: UserDto): Promise<UserRO> {

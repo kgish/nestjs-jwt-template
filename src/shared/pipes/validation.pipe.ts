@@ -1,13 +1,9 @@
 import {HttpException, HttpStatus, Logger} from '@nestjs/common';
-import {
-  PipeTransform,
-  Injectable,
-  ArgumentMetadata,
-} from '@nestjs/common';
+import {PipeTransform, Injectable, ArgumentMetadata} from '@nestjs/common';
 import {validate} from 'class-validator';
 import {plainToClass} from 'class-transformer';
 
-import {isUuid} from "uuidv4";
+import {isUuid} from 'uuidv4';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
@@ -15,7 +11,6 @@ export class ValidationPipe implements PipeTransform<any> {
 
   constructor() {
     this.logger = new Logger('ValidationPipe');
-    this.logger.log('constructor()');
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
@@ -27,9 +22,9 @@ export class ValidationPipe implements PipeTransform<any> {
       throw new HttpException('Validation failed: empty body', HttpStatus.BAD_REQUEST);
     }
 
-    if (metadata.type === 'param' && metadata.data === 'id' && typeof(value) === 'string') {
+    if (metadata.type === 'param' && metadata.data === 'id' && typeof (value) === 'string') {
       // Check that the id is a valid uuid.
-      if (!isUuid(value)){
+      if (!isUuid(value)) {
         this.logger.log(`transform(value='${JSON.stringify(value)}',metadata='${JSON.stringify(metadata)}') => HTTP Exception NOT_FOUND (invalid uuid='${value}')`);
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }

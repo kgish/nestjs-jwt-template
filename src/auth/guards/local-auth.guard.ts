@@ -8,7 +8,6 @@ export class LocalAuthGuard extends AuthGuard('local') {
   constructor() {
     super();
     this.logger = new Logger('LocalAuthGuard');
-    this.logger.log('constructor()');
   }
 
   canActivate(context: ExecutionContext) {

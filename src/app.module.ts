@@ -12,10 +12,10 @@ import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
 import {LoggingInterceptor} from './shared/interceptors/logging.interceptor';
 
 import {AuthModule} from './auth/auth.module';
-import {PostsModule} from './posts';
+import {PostsModule} from './posts/posts.module';
 import {UsersModule} from './users/users.module';
 
-import {configuration} from './config/configuration';
+import {configuration} from './config';
 
 const config = configuration();
 
@@ -55,7 +55,6 @@ export class AppModule {
 
   constructor() {
     this.logger = new Logger('AppModule');
-    this.logger.log('constructor()');
 
     const dotenv = path.resolve(__dirname, '..', '.env');
     if (fs.existsSync(dotenv)) {
