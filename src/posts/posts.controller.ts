@@ -56,9 +56,7 @@ export class PostsController {
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Create'))
   create(@Body() data: PostDto): Promise<PostRO> {
     this.logger.log(`POST create(data='${JSON.stringify(data)}')`);
-    const result = this.postsService.create(data);
-    this.logger.log(`POST create(data='${JSON.stringify(data)}') => result='${JSON.stringify(result)}'`);
-    return result;
+    return this.postsService.create(data);
   }
 
   @Get()
@@ -70,14 +68,13 @@ export class PostsController {
   @ApiOperation(GetOperationId(PostEntity.modelName, 'GetAll'))
   findAll(): Promise<PostRO[]> {
     this.logger.log('GET findAll()');
-    const result = this.postsService.findAll();
-    this.logger.log(`GET findAll() => result='${JSON.stringify(result)}'`);
-    return result;
+    return this.postsService.findAll();
   }
 
   @Get(':id')
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({type: PostEntity})
   @ApiBadRequestResponse({type: ApiException})
   @ApiNotFoundResponse({type: ApiException})
@@ -85,9 +82,7 @@ export class PostsController {
   @ApiOperation(GetOperationId(PostEntity.modelName, 'GetOne'))
   findOne(@Param('id') id: string): Promise<PostRO> {
     this.logger.log(`GET findOne(id='${id}')`);
-    const result = this.postsService.findOne(id);
-    this.logger.log(`GET findOne(id='${id}') result='${JSON.stringify(result)}'`);
-    return result;
+    return this.postsService.findOne(id);
   }
 
   @Put()
@@ -101,14 +96,13 @@ export class PostsController {
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Update'))
   update(@Param('id') id: string, @Body() data: Partial<PostDto>): Promise<PostRO> {
     this.logger.log(`PUT update(id='${id}',data='${JSON.stringify(data)}')`);
-    const result = this.postsService.update(id, data);
-    this.logger.log(`PUT update(id='${id}',data='${JSON.stringify(data)}') result='${JSON.stringify(result)}'`);
-    return result;
+    return this.postsService.update(id, data);
   }
 
   @Delete()
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({type: PostEntity})
   @ApiBadRequestResponse({type: ApiException})
   @ApiNotFoundResponse({type: ApiException})
@@ -116,8 +110,6 @@ export class PostsController {
   @ApiOperation(GetOperationId(PostEntity.modelName, 'Delete'))
   delete(@Param('id') id: string): Promise<PostRO> {
     this.logger.log(`DELETE delete(id='${id}')`);
-    const result = this.postsService.delete(id);
-    this.logger.log(`DELETE delete(id='${id}') result='${JSON.stringify(result)}'`);
-    return result;
+    return this.postsService.delete(id);
   }
 }

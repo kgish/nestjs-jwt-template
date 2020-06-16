@@ -41,9 +41,7 @@ export class UsersController {
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Create'))
   create(@Body() data: UserDto): Promise<UserRO> {
     this.logger.log(`POST create(data='${JSON.stringify(data)}')`);
-    const result = this.usersService.create(data);
-    this.logger.log(`POST create(data='${JSON.stringify(data)}') => result='${JSON.stringify(result)}'`);
-    return result;
+    return this.usersService.create(data);
   }
 
   @Get()
@@ -55,14 +53,13 @@ export class UsersController {
   @ApiOperation(GetOperationId(UserEntity.modelName, 'GetAll'))
   findAll(): Promise<UserRO[]> {
     this.logger.log('GET findAll()');
-    const result = this.usersService.findAll();
-    this.logger.log(`GET findAll() => result='${JSON.stringify(result)}'`);
-    return result;
+    return this.usersService.findAll();
   }
 
   @Get(':id')
   @Roles(Role.admin, Role.editor)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({type: UserEntity})
   @ApiBadRequestResponse({type: ApiException})
   @ApiNotFoundResponse({type: ApiException})
@@ -70,9 +67,7 @@ export class UsersController {
   @ApiOperation(GetOperationId(UserEntity.modelName, 'GetOne'))
   findOne(@Param('id') id: string): Promise<UserRO> {
     this.logger.log(`GET findOne(id='${id}')`);
-    const result = this.usersService.findOne(id);
-    this.logger.log(`GET findOne(id='${id}') result='${JSON.stringify(result)}'`);
-    return result;
+    return this.usersService.findOne(id);
   }
 
   @Put()
@@ -86,14 +81,13 @@ export class UsersController {
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Update'))
   update(@Param('id') id: string, @Body() data: Partial<UserDto>): Promise<UserRO> {
     this.logger.log(`PUT update(id='${id}',data='${JSON.stringify(data)}')`);
-    const result = this.usersService.update(id, data);
-    this.logger.log(`PUT update(id='${id}',data='${JSON.stringify(data)}') result='${JSON.stringify(result)}'`);
-    return result;
+    return this.usersService.update(id, data);
   }
 
   @Delete()
   @Roles(Role.admin)
   @UseGuards(new JwtAuthGuard(), RolesGuard)
+  @UsePipes(new ValidationPipe())
   @ApiOkResponse({type: UserEntity})
   @ApiBadRequestResponse({type: ApiException})
   @ApiNotFoundResponse({type: ApiException})
@@ -101,8 +95,6 @@ export class UsersController {
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Delete'))
   delete(@Param('id') id: string): Promise<UserRO> {
     this.logger.log(`DELETE delete(id='${id}')`);
-    const result = this.usersService.delete(id);
-    this.logger.log(`DELETE delete(id='${id}') result='${JSON.stringify(result)}'`);
-    return result;
+    return this.usersService.delete(id);
   }
 }
