@@ -4,7 +4,7 @@ import {InjectRepository} from '@nestjs/typeorm';
 
 import {UserEntity} from './user.entity';
 import {UserRO} from './interfaces';
-import {UserDto} from './dto';
+import {UserCreateDto, UserDto} from './dto';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +17,7 @@ export class UsersService {
     this.logger = new Logger('UsersService');
   }
 
-  async create(data: UserDto): Promise<UserRO> {
+  async create(data: UserCreateDto): Promise<UserRO> {
     // this.logger.log(`create(data='${JSON.stringify(data)}')`);
     const userRO = await this.userRepository.create(data);
     await this.userRepository.save(userRO);

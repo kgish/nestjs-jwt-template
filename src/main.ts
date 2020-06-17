@@ -11,7 +11,6 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
 
   const config = configuration();
-  logger.log(`config='${JSON.stringify(config)}'`);
 
   const app = await NestFactory.create(AppModule, {
     logger: config.api.logger.enabled ? config.api.logger.levels : false
@@ -64,6 +63,7 @@ async function bootstrap() {
 
   await app.listen(port);
 
+  logger.log(`config='${JSON.stringify(config)}'`);
   logger.log(`Server running on ${hostDomain}/${prefix}`);
 }
 

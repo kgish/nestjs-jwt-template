@@ -17,7 +17,7 @@ import {JwtAuthGuard} from '../auth/guards';
 import {UserEntity} from './user.entity';
 import {GetOperationId} from '../shared';
 import {ApiException} from '../shared/api-exception';
-import {UserDto} from './dto';
+import {UserCreateDto, UserDto} from './dto';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -38,7 +38,7 @@ export class UsersController {
   @ApiBadRequestResponse({type: ApiException})
   @ApiForbiddenResponse({type: ApiException})
   @ApiOperation(GetOperationId(UserEntity.modelName, 'Create'))
-  create(@Body() data: UserDto): Promise<UserRO> {
+  create(@Body() data: UserCreateDto): Promise<UserRO> {
     this.logger.log(`POST create(data='${JSON.stringify(data)}')`);
     return this.usersService.create(data);
   }

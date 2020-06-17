@@ -8,8 +8,8 @@ import * as fs from 'fs';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 
-import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
-import {LoggingInterceptor} from './shared/interceptors/logging.interceptor';
+import {HttpExceptionFilter} from './shared/filters';
+import {LoggingInterceptor} from './shared/interceptors';
 
 import {AuthModule} from './auth/auth.module';
 import {PostsModule} from './posts/posts.module';
